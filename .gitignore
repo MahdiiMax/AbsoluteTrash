@@ -1,0 +1,32 @@
+# Composer dependencies
+/vendor/
+
+# Library packages don't commit the lockfile
+/composer.lock
+
+# Environment files (secrets stay out of the repo)
+.env
+.env.*
+!.env.example
+
+# Framework runtime artifacts
+/storage/framework/views/*.php
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/logs/*.log
+
+# Testing
+.phpunit.result.cache
+.phpunit.cache/
+
+# IDE / editors
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
