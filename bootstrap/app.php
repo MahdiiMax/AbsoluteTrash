@@ -2,4 +2,6 @@
 
 declare(strict_types=1);
 
-return null;
+use Trash\Foundation\Application;
+
+return new Application(dirname(__DIR__));
