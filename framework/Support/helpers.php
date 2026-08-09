@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Trash\Config\Config;
+
 function numericValue(string $value): int|float|string
 {
     return is_numeric($value) ? (str_contains($value, '.') ? (float)$value : (int)$value) : $value;
@@ -19,4 +21,9 @@ function env(string $key, mixed $default = null): mixed
         'null', '(null)' => null,
         default => numericValue($value)
     };
+}
+
+function config(string $key, mixed $default = null): mixed
+{
+    return Config::get($key, $default);
 }
