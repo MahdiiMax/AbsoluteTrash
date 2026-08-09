@@ -25,5 +25,5 @@ function env(string $key, mixed $default = null): mixed
 
 function config(string $key, mixed $default = null): mixed
 {
-    return Config::get($key, $default);
+    return Config::getInstance()->get($key, $default);
 }
