@@ -6,7 +6,7 @@ namespace Trash\Support;
 
 class Arr
 {
-    private static function getData(mixed $target, string|array $key): mixed
+    public static function getData(mixed $target, string|array $key): mixed
     {
         $segments = is_array($key) ? $key : explode('.', str_replace('->', '.', $key));
         foreach ($segments as $segment) {
