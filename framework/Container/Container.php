@@ -84,26 +84,23 @@ class Container implements ContainerInterface
 
     public function make(string $abstract, array $parameters = []): mixed
     {
-        return $this->resolve($abstract, $parameters);
+        if (isset($this->instances[$abstract])) {
+            return $this->instances[$abstract];
+        }
+        if (isset($this->singletonBindings[$abstract])) {
+            return $this->instances[$abstract] = $this->resolve($this->singletonBindings[$abstract], $parameters);
+        }
+        if (isset($this->bindings[$abstract])) {
+            return $this->resolve($this->bindings[$abstract], $parameters);
+        }
+        if (class_exists($abstract)) {
+            return $this->resolve($abstract, $parameters);
+        }
+        throw new NotFoundException("Target [$abstract] is not bound in the container.");
     }
 
     public function get(string $id): mixed
     {
-        if (isset($this->instances[$id])) {
-            return $this->instances[$id];
-        }
-
-        if (isset($this->singletonBindings[$id])) {
-            return $this->instances[$id] = $this->resolve($this->singletonBindings[$id]);
-        }
-
-        if (isset($this->bindings[$id])) {
-            return $this->resolve($this->bindings[$id]);
-        }
-
-        if (class_exists($id)) {
-            return $this->resolve($id);
-        }
-        throw new NotFoundException("Target [$id] is not bound in the container.");
+        return $this->make($id);
     }
 }
