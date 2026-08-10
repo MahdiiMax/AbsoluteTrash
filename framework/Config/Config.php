@@ -6,25 +6,24 @@ namespace Trash\Config;
 
 class Config
 {
-    private static ?array $items = null;
+    private static ?Config $instance = null;
 
-    private static function loadIfNeeded(): void
+    private function __construct(private array $items) {}
+
+    private static function load(): array
     {
-        if (self::$items !== null) {
-            return;
-        }
-        self::$items = [];
+        $items = [];
         $configPath = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
         foreach (glob($configPath . '*.php') as $file) {
             $name = basename($file, '.php');
-            self::$items[$name] = require $file;
+            $items[$name] = require $file;
         }
+        return $items;
     }
 
-    public static function get(string $key, mixed $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
-        self::loadIfNeeded();
-        $value = self::$items;
+        $value = $this->items;
         foreach (explode('.', $key) as $segment) {
             if (!is_array($value) || !array_key_exists($segment, $value)) {
                 return $default;
@@ -32,5 +31,13 @@ class Config
             $value = $value[$segment];
         }
         return $value;
+    }
+
+    public static function getInstance(): Config
+    {
+        if (self::$instance === null) {
+            self::$instance = new self(self::load());
+        }
+        return self::$instance;
     }
 }

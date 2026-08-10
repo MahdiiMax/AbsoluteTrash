@@ -1,14 +1,16 @@
 {
   "name": "mahdiimax/absolute-trash",
-  "description": "Absolute Trash — a hand-built PHP 8.3 MVC framework.",
+  "description": "Absolute Trash — a hand-built PHP 8.4 MVC framework.",
   "type": "project",
   "license": "MIT",
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "psr/container": "^2.0",
     "psr/http-message": "^2.0",
     "psr/http-server-handler": "^1.0",
-    "psr/http-server-middleware": "^1.0"
+    "psr/http-server-middleware": "^1.0",
+    "ext-mbstring": "*"
+    
   },
   "require-dev": {
     "phpunit/phpunit": "^12.5.12"
