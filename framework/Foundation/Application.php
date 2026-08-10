@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Trash\Foundation;
 
 use Trash\Container\Container;
+use Trash\Foundation\Facades\Facade;
 
 class Application extends Container
 {
@@ -14,6 +15,7 @@ class Application extends Container
     {
         self::$instance = $this;
         $this->instance(Application::class, $this);
+        Facade::setFacadeApplication($this);
         $this->registerProviders();
     }
 
