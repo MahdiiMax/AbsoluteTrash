@@ -1,6 +1,6 @@
 # Absolute Trash
 
-> A hand-built PHP 8.3 MVC framework: attribute-based routing, PSR-7/PSR-15 HTTP
+> A hand-built PHP 8.4 MVC framework: attribute-based routing, PSR-7/PSR-15 HTTP
 > layer, Eloquent-style ORM, Blade-like view engine, migrations, and a full CLI —
 > with zero runtime dependencies.
 
@@ -9,7 +9,7 @@ architecture. **This is a work in progress.**
 
 ## Status
 
-- [ ] Foundation (container, facades, helpers)
+- [x] Foundation (container, facades, helpers)
 - [ ] HTTP layer (PSR-7 / PSR-15)
 - [ ] Attribute-based routing
 - [ ] Middleware pipeline
@@ -20,6 +20,12 @@ architecture. **This is a work in progress.**
 - [ ] Console CLI
 - [ ] Demo app
 - [ ] Tests & docs
+
+## Requirements
+
+- PHP 8.4 or newer
+- `ext-mbstring` (multibyte string extension)
+- Composer 2
 
 ## Installation
 
