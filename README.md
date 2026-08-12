@@ -10,9 +10,9 @@ architecture. **This is a work in progress.**
 ## Status
 
 - [x] Foundation (container, facades, helpers)
-- [ ] HTTP layer (PSR-7 / PSR-15)
+- [x] HTTP messages (PSR-7): Stream, Uri, Request, Response, ServerRequest, UploadedFile
 - [ ] Attribute-based routing
-- [ ] Middleware pipeline
+- [ ] Middleware pipeline (PSR-15)
 - [ ] View engine
 - [ ] Database / ORM / migrations
 - [ ] Auth, validation, sessions
