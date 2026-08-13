@@ -9,5 +9,13 @@ return [
     'url'   => env('APP_URL', 'http://localhost'),
     'providers' => [
         \App\Providers\AppServiceProvider::class,
+        \Trash\Routing\RoutingServiceProvider::class,
     ],
+    'middleware' => [
+        \App\Http\Middleware\AddHeaderMiddleware::class,
+    ],
+    'routes' => [
+        dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'web.php',
+    ],
+    'controllers' => 'Http/Controllers',
 ];

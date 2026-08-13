@@ -4,8 +4,17 @@ declare(strict_types=1);
 
 namespace Trash\Foundation;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Trash\Container\Container;
 use Trash\Foundation\Facades\Facade;
+use Trash\Http\Message\Response;
+use Trash\Http\Message\ServerRequestFactory;
+use Trash\Http\Middleware\Dispatcher;
+use Trash\Http\Middleware\RouterMiddleware;
+use Trash\Routing\Exceptions\HttpNotFoundException;
+use Trash\Routing\RouteHandler;
+use Trash\Routing\Router;
 
 class Application extends Container
 {
@@ -43,8 +52,19 @@ class Application extends Container
         return $this->basePath;
     }
 
-    public function handle(): void
+    public function handle(?ServerRequestInterface $request = null): ResponseInterface
     {
-        echo "Absolute Trash is running.";
+        $request ??= ServerRequestFactory::fromGlobals();
+        $router = $this->make(Router::class);
+        $global = array_map(fn(string $middleware) => $this->make($middleware), config('app.middleware', []));
+        $pipeline = new Dispatcher(
+            [...$global, new RouterMiddleware($router, $this)],
+            new RouteHandler($this)
+        );
+        try {
+            return $pipeline->handle($request);
+        } catch (HttpNotFoundException) {
+            return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
+        }
     }
 }
