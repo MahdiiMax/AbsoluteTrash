@@ -59,4 +59,9 @@ class Router
     {
         return $this->routes->getRoutes();
     }
+
+    public function getByName(string $name): ?Route
+    {
+        return $this->routes->getByName($name);
+    }
 }
