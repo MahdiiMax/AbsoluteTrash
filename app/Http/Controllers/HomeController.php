@@ -14,7 +14,7 @@ class HomeController
         return 'Absolute Trash From HomeController.';
     }
 
-    public function show(string $id): array
+    public function show(int $id): array
     {
         return ['id' => $id, 'name' => "user-{$id}"];
     }

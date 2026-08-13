@@ -11,7 +11,9 @@ return [
         \App\Providers\AppServiceProvider::class,
         \Trash\Routing\RoutingServiceProvider::class,
     ],
-    'middleware' => [],
+    'middleware' => [
+        \App\Http\Middleware\AddHeaderMiddleware::class,
+    ],
     'routes' => [
         dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'web.php',
     ],

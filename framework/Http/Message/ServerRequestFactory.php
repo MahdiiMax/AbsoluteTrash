@@ -14,9 +14,7 @@ final class ServerRequestFactory
         $scheme = $https ? 'https' : 'http';
         $uri = (new Uri())->withScheme($scheme);
         $authority = $server['HTTP_HOST'] ?? $server['SERVER_NAME'] ?? '';
-        if ($authority === '') {
-            return $uri;
-        }
+         if ($authority !== '') {
         $port = null;
         if (preg_match('/^(.+):(\d+)$/', $authority, $m) === 1) {
             $authority = $m[1];
@@ -29,6 +27,7 @@ final class ServerRequestFactory
         if ($port !== null && $port !== ($scheme === 'https' ? 443 : 80)) {
             $uri = $uri->withPort($port);
         }
+    }   
         $requestUri = $server['REQUEST_URI'] ?? '/';
         $pos = strpos($requestUri, '?');
         $path = $pos === false ? $requestUri : substr($requestUri, 0, $pos);
