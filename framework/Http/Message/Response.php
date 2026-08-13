@@ -121,4 +121,16 @@ class Response extends Message implements ResponseInterface
     {
         return $this->reasonPhrase;
     }
+
+    public static function json(mixed $data, int $status = 200, array $headers = []): static
+    {
+        $headers['Content-Type'] ??= 'application/json';
+        return new static($status, $headers, json_encode($data, JSON_THROW_ON_ERROR));
+    }
+
+    public static function html(string $body, int $status = 200, array $headers = []): static
+    {
+        $headers['Content-Type'] ??= 'text/html; charset=UTF-8';
+        return new static($status, $headers, $body);
+    }
 }
