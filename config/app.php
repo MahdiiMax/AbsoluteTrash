@@ -15,7 +15,7 @@ return [
         \App\Http\Middleware\AddHeaderMiddleware::class,
     ],
     'routes' => [
-        dirname(__DIR__) . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'web.php',
+        base_path(fixPathSeparator('routes/web.php')),
     ],
-    'controllers' => 'Http/Controllers',
+    'controllers' => fixPathSeparator('Http/Controllers'),
 ];
