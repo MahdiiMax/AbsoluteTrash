@@ -74,6 +74,11 @@ function resource_path(string $path = ''): string
     return base_path('resources') . ($path !== '' ? DIRECTORY_SEPARATOR . $path : '');
 }
 
+function fixPathSeparator(string $path): string
+{
+    return str_replace('/', DIRECTORY_SEPARATOR, $path);
+}
+
 function abort(int $code, string $message = ''): never
 {
     throw new RuntimeException($message !== '' ? $message : "HTTP {$code}", $code);

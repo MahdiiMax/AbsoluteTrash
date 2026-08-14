@@ -11,8 +11,8 @@ architecture. **This is a work in progress.**
 
 - [x] Foundation (container, facades, helpers)
 - [x] HTTP messages (PSR-7): Stream, Uri, Request, Response, ServerRequest, UploadedFile
-- [ ] Attribute-based routing
-- [ ] Middleware pipeline (PSR-15)
+- [x] Attribute-based routing
+- [x] Middleware pipeline (PSR-15)
 - [ ] View engine
 - [ ] Database / ORM / migrations
 - [ ] Auth, validation, sessions
