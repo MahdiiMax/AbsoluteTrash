@@ -10,6 +10,7 @@ return [
     'providers' => [
         \App\Providers\AppServiceProvider::class,
         \Trash\Routing\RoutingServiceProvider::class,
+        \Trash\View\ViewServiceProvider::class,
     ],
     'middleware' => [
         \App\Http\Middleware\AddHeaderMiddleware::class,
@@ -18,4 +19,5 @@ return [
         base_path(fixPathSeparator('routes/web.php')),
     ],
     'controllers' => fixPathSeparator('Http/Controllers'),
+    'views' => resource_path(fixPathSeparator('views')),
 ];
