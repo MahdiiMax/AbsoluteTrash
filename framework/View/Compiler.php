@@ -8,6 +8,7 @@ class Compiler
 {
     private array $directives = [];
     private int $loopDepth = 0;
+    private array $footers = [];
 
     public function __construct(private string $cachePath)
     {
@@ -31,7 +32,7 @@ class Compiler
             'break' => fn(string $e) => $e === '' ? '<?php break; ?>' : "<?php break $e; ?>",
             'php' => fn(string $e) => $e === '' ? '<?php ?>' : "<?php $e; ?>",
             'include' => $this->compileInclude(...),
-            'extends' => fn(string $e) => '<?php $__env->setLayout(' . $e . '); ?>',
+            'extends' => $this->compileExtends(...),
             'section' => $this->compileSection(...),
             'endsection' => fn() => '<?php $__env->stopSection(); ?>',
             'stop' => fn() => '<?php $__env->stopSection(); ?>',
@@ -47,6 +48,7 @@ class Compiler
     public function compileString(string $template): string
     {
         $this->loopDepth = 0;
+        $this->footers = [];
         $template = $this->protectLiteralBraces($template);
         $template = preg_replace_callback('/\{\{--(.*?)--\}\}/s', fn(): string => '', $template);
         $template = preg_replace_callback('/\{!!(.*?)!!\}/s', fn(array $m): string => '<?php echo ' . trim($m[1]) . '; ?>', $template);
@@ -54,7 +56,7 @@ class Compiler
         $template = preg_replace_callback('/\x1A(.*?)\x1A/s', fn(array $m): string => '{{' . $m[1] . '}}', $template);
         $template = preg_replace_callback('/@php\s*(.*?)\s*@endphp/s', fn(array $m): string => '<?php ' . trim($m[1]) . ' ?>', $template);
         $template = $this->compileDirectives($template);
-        return $template;
+        return $template . implode("\n", $this->footers);
     }
 
     public function compile(string $path): string
@@ -146,5 +148,11 @@ class Compiler
     {
         [$name, $default] = array_pad(array_map('trim', explode(',', $expr, 2)), 2, "''");
         return '<?php echo $__env->yieldContent(' . $name . ', ' . $default . '); ?>';
+    }
+
+    private function compileExtends(string $expr): string
+    {
+        $this->footers[] = '<?php echo $__env->make(' . $expr . ', get_defined_vars())->render(); ?>';
+        return '';
     }
 }
