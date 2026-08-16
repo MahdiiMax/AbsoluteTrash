@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Trash\Config\Config;
 use Trash\Foundation\Application;
+use Trash\View\View;
+use Trash\View\ViewFactory;
 
 function numericValue(string $value): int|float|string
 {
@@ -95,4 +97,14 @@ function dd(mixed ...$values): never
 {
     dump(...$values);
     exit(1);
+}
+
+function e(mixed $value): string
+{
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function view(string $view, array $data = []): View
+{
+    return app(ViewFactory::class)->make($view, $data);
 }

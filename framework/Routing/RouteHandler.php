@@ -11,6 +11,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Trash\Container\Container;
 use Trash\Http\Message\Response;
+use Trash\View\View;
 
 class RouteHandler implements RequestHandlerInterface
 {
@@ -27,9 +28,10 @@ class RouteHandler implements RequestHandlerInterface
         $result = $this->container->call($route->getAction(), $params);
         return match (true) {
             $result instanceof ResponseInterface => $result,
+            $result instanceof View => Response::html($result->render()),
             is_string($result) => Response::html($result),
             is_array($result) => Response::json($result),
-            default => throw new RuntimeException('Route action must return ResponseInterface, string, or array.'),
+            default => throw new RuntimeException('Route action must return ResponseInterface, string, array, or View.'),
         };
     }
 }

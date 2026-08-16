@@ -13,7 +13,7 @@ architecture. **This is a work in progress.**
 - [x] HTTP messages (PSR-7): Stream, Uri, Request, Response, ServerRequest, UploadedFile
 - [x] Attribute-based routing
 - [x] Middleware pipeline (PSR-15)
-- [ ] View engine
+- [x] View engine
 - [ ] Database / ORM / migrations
 - [ ] Auth, validation, sessions
 - [ ] Mail / storage
