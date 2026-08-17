@@ -76,6 +76,11 @@ function resource_path(string $path = ''): string
     return base_path('resources') . ($path !== '' ? DIRECTORY_SEPARATOR . $path : '');
 }
 
+function database_path(string $path = ''): string
+{
+    return base_path('database') . ($path !== '' ? DIRECTORY_SEPARATOR . $path : '');
+}
+
 function fixPathSeparator(string $path): string
 {
     return str_replace('/', DIRECTORY_SEPARATOR, $path);
