@@ -111,4 +111,9 @@ class Connection
             throw $e;
         }
     }
+
+    public function table(string $table): QueryBuilder
+    {
+        return new QueryBuilder($this, $table);
+    }
 }
