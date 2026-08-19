@@ -42,6 +42,16 @@ class Str
         return self::snake($value, '-');
     }
 
+    public static function plural(string $value): string
+    {
+        return Pluralizer::plural($value);
+    }
+
+    public static function singular(string $value): string
+    {
+        return Pluralizer::singular($value);
+    }
+    
     public static function limit(string $value, int $limit = 100, string $end = '...'): string
     {
         if (mb_strwidth($value) <= $limit) {
