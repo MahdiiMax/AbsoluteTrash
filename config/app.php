@@ -11,6 +11,7 @@ return [
         \App\Providers\AppServiceProvider::class,
         \Trash\Routing\RoutingServiceProvider::class,
         \Trash\View\ViewServiceProvider::class,
+        \Trash\Database\DatabaseServiceProvider::class,
     ],
     'middleware' => [
         \App\Http\Middleware\AddHeaderMiddleware::class,
