@@ -14,7 +14,7 @@ architecture. **This is a work in progress.**
 - [x] Attribute-based routing
 - [x] Middleware pipeline (PSR-15)
 - [x] View engine
-- [ ] Database / ORM / migrations
+- [x] Database / ORM / migrations
 - [ ] Auth, validation, sessions
 - [ ] Mail / storage
 - [ ] Console CLI
