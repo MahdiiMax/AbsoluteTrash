@@ -76,7 +76,7 @@ class Model
     {
         return static::$table !== ''
             ? static::$table
-            : Str::snake(Str::studly(class_basename(static::class)));
+            : Str::plural(Str::snake(Str::studly(substr(static::class, strrpos(static::class, '\\') + 1))));
     }
 
     public static function all(): Collection
