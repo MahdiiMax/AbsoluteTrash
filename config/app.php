@@ -12,9 +12,11 @@ return [
         \Trash\Routing\RoutingServiceProvider::class,
         \Trash\View\ViewServiceProvider::class,
         \Trash\Database\DatabaseServiceProvider::class,
+        \Trash\Session\SessionServiceProvider::class,
     ],
     'middleware' => [
         \App\Http\Middleware\AddHeaderMiddleware::class,
+        \Trash\Http\Middleware\StartSession::class,
     ],
     'routes' => [
         base_path(fixPathSeparator('routes/web.php')),
