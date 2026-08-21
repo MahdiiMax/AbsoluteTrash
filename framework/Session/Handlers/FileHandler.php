@@ -12,7 +12,11 @@ class FileHandler implements SessionHandlerInterface
     public function __construct(
         private string $path,
         private int $lifetime = 120
-    ) {}
+    ) {
+        if (!is_dir($this->path)) {
+            mkdir($this->path, 0777, true);
+        }
+    }
 
     #[Override]
     public function open(string $path, string $name): bool
