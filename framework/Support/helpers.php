@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Trash\Config\Config;
 use Trash\Foundation\Application;
+use Trash\Session\Store;
 use Trash\View\View;
 use Trash\View\ViewFactory;
 
@@ -112,4 +113,13 @@ function e(mixed $value): string
 function view(string $view, array $data = []): View
 {
     return app(ViewFactory::class)->make($view, $data);
+}
+
+function session(?string $key = null, mixed $default = null): mixed
+{
+    $store = app(Store::class);
+    if ($key === null) {
+        return $store;
+    }
+    return $store->get($key, $default);
 }
