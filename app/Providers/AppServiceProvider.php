@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Trash\Config\Config;
 use Trash\Foundation\ServiceProvider;
+use Trash\View\ViewFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,5 +19,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->instance('booted', $this->app->get('greeting'));
+        $this->app->make(ViewFactory::class)->share('framework', 'Absolute Trash');
     }
 }

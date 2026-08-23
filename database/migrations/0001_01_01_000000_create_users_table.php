@@ -3,6 +3,7 @@
 use Trash\Database\Blueprint;
 use Trash\Database\Connection;
 use Trash\Database\Schema;
+use Trash\Support\Hash;
 
 return function (Schema $schema) {
     $schema->create('users', function (Blueprint $table) {
@@ -16,6 +17,6 @@ return function (Schema $schema) {
 
     $conn = app(Connection::class);
     $now = date('Y-m-d H:i:s');
-    $conn->insert('users', ['name' => 'Alice', 'email' => 'alice@example.com', 'password' => 'secret', 'active' => 1, 'created_at' => $now, 'updated_at' => $now]);
-    $conn->insert('users', ['name' => 'Bob', 'email' => 'bob@example.com', 'password' => 'secret', 'active' => 1, 'created_at' => $now, 'updated_at' => $now]);
+    $conn->insert('users', ['name' => 'Alice', 'email' => 'alice@example.com', 'password' => Hash::make('secret'), 'active' => 1, 'created_at' => $now, 'updated_at' => $now]);
+    $conn->insert('users', ['name' => 'Bob', 'email' => 'bob@example.com', 'password' => Hash::make('secret'), 'active' => 1, 'created_at' => $now, 'updated_at' => $now]);
 };

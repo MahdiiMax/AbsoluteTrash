@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Trash\Auth\Guards\SessionGuard;
 use Trash\Config\Config;
 use Trash\Foundation\Application;
 use Trash\Session\Store;
@@ -122,4 +123,9 @@ function session(?string $key = null, mixed $default = null): mixed
         return $store;
     }
     return $store->get($key, $default);
+}
+
+function auth(): SessionGuard
+{
+    return app(SessionGuard::class);
 }
