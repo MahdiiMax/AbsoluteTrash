@@ -13,6 +13,7 @@ return [
         \Trash\View\ViewServiceProvider::class,
         \Trash\Database\DatabaseServiceProvider::class,
         \Trash\Session\SessionServiceProvider::class,
+        \Trash\Auth\AuthServiceProvider::class,
     ],
     'middleware' => [
         \App\Http\Middleware\AddHeaderMiddleware::class,
