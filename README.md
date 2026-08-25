@@ -15,7 +15,7 @@ architecture. **This is a work in progress.**
 - [x] Middleware pipeline (PSR-15)
 - [x] View engine
 - [x] Database / ORM / migrations
-- [ ] Auth, validation, sessions
+- [x] Auth, validation, sessions
 - [ ] Mail / storage
 - [ ] Console CLI
 - [ ] Demo app
