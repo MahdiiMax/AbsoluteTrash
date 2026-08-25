@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Trash\Auth\Guards\SessionGuard;
 use Trash\Config\Config;
 use Trash\Foundation\Application;
+use Trash\Session\Store;
 use Trash\View\View;
 use Trash\View\ViewFactory;
 
@@ -76,6 +78,11 @@ function resource_path(string $path = ''): string
     return base_path('resources') . ($path !== '' ? DIRECTORY_SEPARATOR . $path : '');
 }
 
+function database_path(string $path = ''): string
+{
+    return base_path('database') . ($path !== '' ? DIRECTORY_SEPARATOR . $path : '');
+}
+
 function fixPathSeparator(string $path): string
 {
     return str_replace('/', DIRECTORY_SEPARATOR, $path);
@@ -107,4 +114,18 @@ function e(mixed $value): string
 function view(string $view, array $data = []): View
 {
     return app(ViewFactory::class)->make($view, $data);
+}
+
+function session(?string $key = null, mixed $default = null): mixed
+{
+    $store = app(Store::class);
+    if ($key === null) {
+        return $store;
+    }
+    return $store->get($key, $default);
+}
+
+function auth(): SessionGuard
+{
+    return app(SessionGuard::class);
 }

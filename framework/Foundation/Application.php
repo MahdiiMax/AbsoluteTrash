@@ -6,6 +6,7 @@ namespace Trash\Foundation;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 use Trash\Container\Container;
 use Trash\Foundation\Facades\Facade;
 use Trash\Http\Message\Response;
@@ -55,6 +56,7 @@ class Application extends Container
     public function handle(?ServerRequestInterface $request = null): ResponseInterface
     {
         $request ??= ServerRequestFactory::fromGlobals();
+        $this->instance(ServerRequestInterface::class, $request);
         $router = $this->make(Router::class);
         $global = array_map(fn(string $middleware) => $this->make($middleware), config('app.middleware', []));
         $pipeline = new Dispatcher(
@@ -65,6 +67,10 @@ class Application extends Container
             return $pipeline->handle($request);
         } catch (HttpNotFoundException) {
             return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
+        } catch (Throwable $e) {
+            $code = $e->getCode();
+            $status = ($code >= 100 && $code <= 599) ? $code : 500;
+            return new Response($status, ['Content-Type' => 'text/plain'], $e->getMessage());
         }
     }
 }
