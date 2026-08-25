@@ -27,7 +27,7 @@ class FileHandler implements SessionHandlerInterface
     #[Override]
     public function close(): bool
     {
-        return false;
+        return true;
     }
 
     #[Override]
@@ -63,7 +63,7 @@ class FileHandler implements SessionHandlerInterface
     {
         $deleted = 0;
         foreach (glob($this->path . '/sess_*') as $file) {
-            if (filemtime($file) < $max_lifetime) {
+            if (filemtime($file) < time() - $max_lifetime) {
                 unlink($file);
                 $deleted++;
             }

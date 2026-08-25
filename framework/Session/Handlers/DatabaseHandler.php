@@ -32,7 +32,7 @@ class DatabaseHandler implements SessionHandlerInterface
     public function read(string $id): string|false
     {
         $row = $this->connection->selectOne(
-            "SELECT payload FROM {$this->table} WHERE id = ? AND lifetime < ?",
+            "SELECT payload FROM {$this->table} WHERE id = ? AND lifetime >= ?",
             [$id, time()]
         );
         return $row !== null ? $row['payload'] : false;
@@ -75,7 +75,7 @@ class DatabaseHandler implements SessionHandlerInterface
     #[Override]
     public function gc(int $max_lifetime): int|false
     {
-        $deleted = $this->connection->delete($this->table, 'last_activity < ?', [$max_lifetime]);
-        return $deleted;    
+        $deleted = $this->connection->delete($this->table, 'last_activity < ?', [time() - $max_lifetime]);
+        return $deleted;
     }
 }
