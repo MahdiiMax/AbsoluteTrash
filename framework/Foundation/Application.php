@@ -6,7 +6,7 @@ namespace Trash\Foundation;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
+use Throwable;
 use Trash\Container\Container;
 use Trash\Foundation\Facades\Facade;
 use Trash\Http\Message\Response;
@@ -67,7 +67,7 @@ class Application extends Container
             return $pipeline->handle($request);
         } catch (HttpNotFoundException) {
             return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
-        } catch (RuntimeException $e) {
+        } catch (Throwable $e) {
             $code = $e->getCode();
             $status = ($code >= 100 && $code <= 599) ? $code : 500;
             return new Response($status, ['Content-Type' => 'text/plain'], $e->getMessage());
