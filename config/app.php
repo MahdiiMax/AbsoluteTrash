@@ -14,6 +14,7 @@ return [
         \Trash\Database\DatabaseServiceProvider::class,
         \Trash\Session\SessionServiceProvider::class,
         \Trash\Auth\AuthServiceProvider::class,
+        \Trash\Mail\MailServiceProvider::class,
     ],
     'middleware' => [
         \App\Http\Middleware\AddHeaderMiddleware::class,
