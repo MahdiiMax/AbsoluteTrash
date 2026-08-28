@@ -16,7 +16,7 @@ architecture. **This is a work in progress.**
 - [x] View engine
 - [x] Database / ORM / migrations
 - [x] Auth, validation, sessions
-- [ ] Mail / storage
+- [x] Mail / storage
 - [ ] Console CLI
 - [ ] Demo app
 - [ ] Tests & docs
