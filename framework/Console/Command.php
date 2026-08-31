@@ -90,4 +90,11 @@ abstract class Command
         }
         return in_array($answer, ['y', 'yes'], true);
     }
+
+    protected function ensureDir(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+    }
 }
