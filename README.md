@@ -17,7 +17,7 @@ architecture. **This is a work in progress.**
 - [x] Database / ORM / migrations
 - [x] Auth, validation, sessions
 - [x] Mail / storage
-- [ ] Console CLI
+- [x] Console CLI
 - [ ] Demo app
 - [ ] Tests & docs
 

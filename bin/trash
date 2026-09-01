@@ -5,12 +5,11 @@ declare(strict_types=1);
 
 $base = dirname(__DIR__);
 require $base . '/vendor/autoload.php';
+
 $app = require $base . '/bootstrap/app.php';
 
-$command = $argv[1] ?? null;
+$input = new Trash\Console\Input($argv);
+$output = new Trash\Console\Output();
 
-match ($command) {
-    'migrate'       => $app->make(Trash\Database\Migrator::class)->migrate(),
-    'migrate:fresh' => $app->make(Trash\Database\Migrator::class)->fresh(),
-    default         => fwrite(STDERR, "Usage: php bin/trash migrate|migrate:fresh\n"),
-};
+$registry = $app->make(Trash\Console\CommandRegistry::class);
+exit($registry->run($input, $output));
