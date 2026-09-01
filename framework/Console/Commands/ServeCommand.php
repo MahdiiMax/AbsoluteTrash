@@ -23,8 +23,11 @@ class ServeCommand extends Command
             $this->error('public/index.php not found.');
             return 1;
         }
+        $server  = escapeshellarg("{$host}:{$port}");
+        $docroot = escapeshellarg($public);
+        $router  = escapeshellarg($index);
         $this->info("Server running at http://{$host}:{$port}");
-        passthru(PHP_BINARY . " -S {$host}:{$port} -t {$public} {$index}");
+        passthru(PHP_BINARY . " -S {$server} -t {$docroot} {$router}");
         return 0;
     }
 
