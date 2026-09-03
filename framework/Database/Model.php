@@ -181,4 +181,23 @@ class Model
     {
         return json_encode($this->toArray(), $options);
     }
+
+    public static function paginate(int $perPage = 15, ?int $page = null): array
+    {
+        $page = $page ?? max(1, (int) ($_GET['page'] ?? 1));
+        $total = (int) app(Connection::class)->selectOne(
+            'SELECT COUNT(*) AS total FROM ' . static::getTable()
+        )['total'];
+        $pages = max(1, (int) ceil($total / $perPage));
+        $offset = ($page - 1) * $perPage;
+        $rows = app(Connection::class)->select(
+            'SELECT * FROM ' . static::getTable() . ' LIMIT ' . (int)$perPage . ' OFFSET ' . (int)$offset
+        );
+        return [
+            'items' => Collection::make(array_map(fn($r) => static::fromRow($r), $rows)),
+            'page'  => $page,
+            'pages' => $pages,
+            'total' => $total,
+        ];
+    }
 }

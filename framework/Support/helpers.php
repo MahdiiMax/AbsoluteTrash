@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Trash\Auth\Guards\SessionGuard;
 use Trash\Config\Config;
 use Trash\Foundation\Application;
+use Trash\Http\RedirectResponse;
 use Trash\Session\Store;
 use Trash\View\View;
 use Trash\View\ViewFactory;
@@ -128,4 +129,10 @@ function session(?string $key = null, mixed $default = null): mixed
 function auth(): SessionGuard
 {
     return app(SessionGuard::class);
+}
+
+function redirect(?string $url = null): RedirectResponse
+{
+    $r = new RedirectResponse($url ?? '/');
+    return $url === null ? $r : $r->to($url);
 }
