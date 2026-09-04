@@ -4,9 +4,17 @@
 
 @section('content')
     <h2>Login</h2>
-    @if($errors ?? false)
-        <p style="color: red;">{{ $errors }}</p>
+
+    @if(session('errors'))
+        <ul style="color: red;">
+            @foreach(session('errors') as $field => $messages)
+                @foreach($messages as $msg)
+                    <li>{{ $msg }}</li>
+                @endforeach
+            @endforeach
+        </ul>
     @endif
+
     <form method="POST" action="/login">
         <div>
             <label for="email">Email</label>
