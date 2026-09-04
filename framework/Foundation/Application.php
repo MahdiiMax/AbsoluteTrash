@@ -13,6 +13,7 @@ use Trash\Http\Message\Response;
 use Trash\Http\Message\ServerRequestFactory;
 use Trash\Http\Middleware\Dispatcher;
 use Trash\Http\Middleware\RouterMiddleware;
+use Trash\Http\ValidationException;
 use Trash\Routing\Exceptions\HttpNotFoundException;
 use Trash\Routing\RouteHandler;
 use Trash\Routing\Router;
@@ -65,6 +66,8 @@ class Application extends Container
         );
         try {
             return $pipeline->handle($request);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors);
         } catch (HttpNotFoundException) {
             return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
         } catch (Throwable $e) {
