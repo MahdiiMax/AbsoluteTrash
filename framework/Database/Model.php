@@ -14,7 +14,6 @@ class Model
     protected static array $fillable = [];
     protected static array $casts = [];
     protected static bool $timestamps = true;
-
     public array $attributes = [];
     public bool $exists = false;
 
@@ -80,10 +79,14 @@ class Model
             : Str::plural(Str::snake(Str::studly(substr(static::class, strrpos(static::class, '\\') + 1))));
     }
 
+    public static function query(): ModelBuilder
+    {
+        return new ModelBuilder(app(Connection::class), static::getTable(), static::class);
+    }
+
     public static function all(): Collection
     {
-        $rows = app(Connection::class)->select('SELECT * FROM ' . static::getTable());
-        return Collection::make(array_map(fn($row) => static::fromRow($row), $rows));
+        return static::query()->get();
     }
 
     public static function find(int $id): ?static
@@ -104,13 +107,9 @@ class Model
         return $model;
     }
 
-    public static function where(string $column, mixed $value): Collection
+    public static function where(string $column, mixed $value): ModelBuilder
     {
-        $rows = app(Connection::class)->select(
-            'SELECT * FROM ' . static::getTable() . ' WHERE ' . $column . ' = ?',
-            [$value]
-        );
-        return Collection::make(array_map(fn($row) => static::fromRow($row), $rows));
+        return static::query()->where($column, $value);
     }
 
     public static function create(array $attributes): static
@@ -186,23 +185,9 @@ class Model
     }
 
     public static function paginate(int $perPage = 15, ?int $page = null): array
-    {
-        $page = $page ?? max(1, (int) ($_GET['page'] ?? 1));
-        $total = (int) app(Connection::class)->selectOne(
-            'SELECT COUNT(*) AS total FROM ' . static::getTable()
-        )['total'];
-        $pages = max(1, (int) ceil($total / $perPage));
-        $offset = ($page - 1) * $perPage;
-        $rows = app(Connection::class)->select(
-            'SELECT * FROM ' . static::getTable() . ' LIMIT ' . (int)$perPage . ' OFFSET ' . (int)$offset
-        );
-        return [
-            'items' => Collection::make(array_map(fn($r) => static::fromRow($r), $rows)),
-            'page'  => $page,
-            'pages' => $pages,
-            'total' => $total,
-        ];
-    }
+{
+    return static::query()->paginate($perPage, $page);
+}
 
     private function setTimestampsForCreate(): void
     {
