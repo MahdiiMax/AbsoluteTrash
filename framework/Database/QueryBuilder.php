@@ -116,7 +116,7 @@ class QueryBuilder
         );
     }
 
-    public function first(): ?array
+    public function first(): mixed
     {
         $this->limitValue = 1;
         $rows = $this->connection->select($this->buildSql(), $this->getBindings());
