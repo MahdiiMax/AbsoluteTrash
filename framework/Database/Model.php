@@ -13,6 +13,7 @@ class Model
     protected static string $table = '';
     protected static array $fillable = [];
     protected static array $casts = [];
+    protected static bool $timestamps = true;
 
     public array $attributes = [];
     public bool $exists = false;
@@ -125,6 +126,7 @@ class Model
         if ($this->exists) {
             return $this->update();
         }
+        $this->setTimestampsForCreate();
         $id = app(Connection::class)->insert(static::getTable(), $this->attributes);
         $this->id = (int) $id;
         $this->exists = true;
@@ -139,6 +141,7 @@ class Model
         if (!$this->exists || !isset($this->attributes['id'])) {
             return false;
         }
+        $this->setTimestampForUpdate();
         $id = $this->attributes['id'];
         $data = $this->attributes;
         unset($data['id']);
@@ -199,5 +202,26 @@ class Model
             'pages' => $pages,
             'total' => $total,
         ];
+    }
+
+    private function setTimestampsForCreate(): void
+    {
+        if (!static::$timestamps) {
+            return;
+        }
+        $now = date('Y-m-d H:i:s');
+        if (!array_key_exists('created_at', $this->attributes)) {
+            $this->attributes['created_at'] = $now;
+        }
+        if (!array_key_exists('updated_at', $this->attributes)) {
+            $this->attributes['updated_at'] = $now;
+        }
+    }
+
+    private function setTimestampForUpdate(): void
+    {
+        if (static::$timestamps) {
+            $this->attributes['updated_at'] = date('Y-m-d H:i:s');
+        }
     }
 }
