@@ -42,4 +42,14 @@ class PostController
         ]);
         return redirect()->route('posts.index')->with('status', 'Post created successfully.');
     }
+
+    public function destroy(int $id): RedirectResponse
+    {
+        $post = Post::findOrFail($id);
+        if ($post->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to delete this post.');
+        }
+        $post->delete();
+        return redirect()->route('posts.index')->with('status', 'Post deleted successfully.');
+    }
 }
