@@ -11,5 +11,12 @@
         {{ $post->body }}
     </div>
 
-    <p><a href="/posts">&larr; Back to posts</a></p>
+    <p><a href="{{ back() }}">&larr; Back to posts</a></p>
+
+    @if ($post->user_id === auth()->id())
+        <form method="POST" action="{{ route('posts.destroy', ['id' => $post->id]) }}" onsubmit="return confirm('Delete this post?');">
+            @method('DELETE')
+            <button type="submit">Delete</button>
+        </form>
+    @endif
 @endsection
