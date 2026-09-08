@@ -136,3 +136,29 @@ function redirect(?string $url = null): RedirectResponse
     $r = new RedirectResponse($url ?? '/');
     return $url === null ? $r : $r->to($url);
 }
+
+function url(string $path = ''): string
+{
+    return rtrim(config('app.url', 'http://localhost'), '/') . '/' . ltrim($path, '/');
+}
+
+function route(string $name, array $params = []): string
+{
+    $router = app(\Trash\Routing\Router::class);
+    $route = $router->getByName($name);
+    $path = $route?->getPath() ?? '/';
+    foreach ($params as $key => $value) {
+        $path = preg_replace('/\{' . preg_quote($key, '/') . '\??\}/', (string) $value, $path, 1);
+    }
+    return url($path);
+}
+
+function asset(string $path = ''): string
+{
+    return url($path);
+}
+
+function back(?string $fallback = '/'): string 
+{
+    return $_SERVER['HTTP_REFERER'] ?? $fallback;
+}
