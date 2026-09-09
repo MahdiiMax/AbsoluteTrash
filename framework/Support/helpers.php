@@ -158,7 +158,17 @@ function asset(string $path = ''): string
     return url($path);
 }
 
-function back(?string $fallback = '/'): string 
+function back(?string $fallback = '/'): string
 {
     return $_SERVER['HTTP_REFERER'] ?? $fallback;
+}
+
+function csrf_token(): string
+{
+    return app(Store::class)->token();
+}
+
+function csrf_field(): string
+{
+    return '<input type="hidden" name="_token" value="' . e(csrf_token()) . '">';
 }
