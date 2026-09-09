@@ -16,6 +16,7 @@
     @endif
 
     <form method="POST" action="/register">
+        @csrf
         <div>
             <label for="name">Name</label>
             <input type="text" name="name" id="name" required>

@@ -16,6 +16,7 @@
     @endif
 
     <form method="POST" action="/login">
+        @csrf
         <div>
             <label for="email">Email</label>
             <input type="email" name="email" id="email" required>
