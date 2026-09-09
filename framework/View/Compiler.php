@@ -37,7 +37,8 @@ class Compiler
             'endsection' => fn() => '<?php $__env->stopSection(); ?>',
             'stop' => fn() => '<?php $__env->stopSection(); ?>',
             'yield' => $this->compileYield(...),
-            'method' => fn(string $e) => '<?php echo \'<input type="hidden" name="_method" value="' . trim($e, "\"' ") . '">\'; ?>'
+            'method' => fn(string $e) => '<?php echo \'<input type="hidden" name="_method" value="' . trim($e, "\"' ") . '">\'; ?>',
+            'csrf' => fn() => '<?php echo csrf_field(); ?>'
         ];
     }
 
