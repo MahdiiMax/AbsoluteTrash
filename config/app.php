@@ -22,6 +22,7 @@ return [
         \App\Http\Middleware\AddHeaderMiddleware::class,
         \Trash\Http\Middleware\StartSession::class,
         \Trash\Http\Middleware\ConvertMethod::class,
+        \Trash\Http\Middleware\VerifyCsrfToken::class,
     ],
     'routes' => [
         base_path(fixPathSeparator('routes/web.php')),
