@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 use Trash\Container\Container;
+use Trash\Database\Exceptions\ModelNotFoundException;
 use Trash\Foundation\Facades\Facade;
 use Trash\Http\Message\Response;
 use Trash\Http\Message\ServerRequestFactory;
@@ -68,6 +69,8 @@ class Application extends Container
             return $pipeline->handle($request);
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors);
+        } catch (ModelNotFoundException) {
+            return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
         } catch (HttpNotFoundException) {
             return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
         } catch (Throwable $e) {
