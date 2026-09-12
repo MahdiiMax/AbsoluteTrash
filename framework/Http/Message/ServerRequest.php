@@ -99,6 +99,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $clone;
     }
 
+    public function file(string $key): ?UploadedFileInterface
+    {
+        return $this->uploadedFiles[$key] ?? null;
+    }
+
     #[Override]
     public function getParsedBody()
     {
