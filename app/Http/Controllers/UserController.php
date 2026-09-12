@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Trash\View\View;
 
 class UserController
 {
-    public function index(): array
+    public function index(): View
     {
-        return User::all()->toArray();
+        return view('users.index', ['users' => User::all()]);
     }
 
-    public function show(int $id): array
+    public function show(int $id): View
     {
-        return User::findOrFail($id)->toArray();
+        return view('users.show', ['user' => User::findOrFail($id)]);
     }
 }

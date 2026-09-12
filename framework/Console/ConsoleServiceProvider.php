@@ -25,6 +25,7 @@ class ConsoleServiceProvider extends ServiceProvider
                 \Trash\Console\Commands\CacheClearCommand::class,
                 \Trash\Console\Commands\DbSeedCommand::class,
                 \Trash\Console\Commands\ServeCommand::class,
+                \Trash\Console\Commands\StorageLinkCommand::class,
             ]);
             $registry->register(config('console.commands', []));
             return $registry;

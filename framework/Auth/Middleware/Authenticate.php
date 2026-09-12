@@ -16,7 +16,7 @@ class Authenticate implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!auth()->check()) {
-            abort(401, 'Unauthenticated');
+            return redirect()->route('login');
         }
         return $handler->handle($request);
     }

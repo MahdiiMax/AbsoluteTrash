@@ -4,10 +4,22 @@ declare(strict_types=1);
 
 namespace Trash\Support;
 
-class Collection
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+use Traversable;
+use Override;
+
+class Collection implements IteratorAggregate, Countable
 {
     public function __construct(protected array $items = []) {}
 
+    #[Override]
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->items);
+    }
+    
     private function valueRetriever(callable|string|null $callback): callable
     {
         if ($callback === null) {

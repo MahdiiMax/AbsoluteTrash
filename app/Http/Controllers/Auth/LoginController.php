@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Trash\Auth\Facades\Auth;
+use Trash\Http\RedirectResponse;
 use Trash\Support\Hash;
 use Trash\View\View;
 
@@ -17,13 +18,13 @@ class LoginController
         return view('auth.login');
     }
 
-    public function login(LoginRequest $request): string|View
+    public function login(LoginRequest $request): string|View|RedirectResponse
     {
         $email = $request->input('email');
         $password = $request->input('password');
         $user = User::where('email', $email)->first();
         if (!$user || !Hash::check($password, $user->password)) {
-            return view('auth.login', ['errors' => 'Invalid credentials.']);
+            return redirect()->back()->withErrors(['email' => ['Invalid credentials.']]);
         }
         Auth::login($user);
         return 'Logged in as ' . $user->name;
