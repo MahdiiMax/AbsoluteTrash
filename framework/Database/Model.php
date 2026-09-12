@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Trash\Database;
 
 use RuntimeException;
+use Trash\Database\Exceptions\ModelNotFoundException;
 use Trash\Support\Collection;
 use Trash\Support\Str;
 
@@ -102,7 +103,7 @@ class Model
     {
         $model = static::find($id);
         if ($model === null) {
-            throw new RuntimeException(static::class . " not found.");
+            throw new ModelNotFoundException(static::class . ' not found.');
         }
         return $model;
     }
@@ -185,9 +186,9 @@ class Model
     }
 
     public static function paginate(int $perPage = 15, ?int $page = null): array
-{
-    return static::query()->paginate($perPage, $page);
-}
+    {
+        return static::query()->paginate($perPage, $page);
+    }
 
     private function setTimestampsForCreate(): void
     {
