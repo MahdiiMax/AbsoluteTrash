@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Trash\Database;
 
-use RuntimeException;
 use Trash\Database\Exceptions\ModelNotFoundException;
 use Trash\Support\Collection;
 use Trash\Support\Str;
