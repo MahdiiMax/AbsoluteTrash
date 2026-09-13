@@ -59,6 +59,7 @@ class Application extends Container
     {
         $request ??= ServerRequestFactory::fromGlobals();
         $this->instance(ServerRequestInterface::class, $request);
+        $this->instance(get_class($request), $request);
         $router = $this->make(Router::class);
         $global = array_map(fn(string $middleware) => $this->make($middleware), config('app.middleware', []));
         $pipeline = new Dispatcher(
