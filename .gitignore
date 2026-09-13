@@ -34,3 +34,5 @@ Thumbs.db
 /database/*.sqlite
 
 /public/storage
+/storage/app/*
+!/storage/app/.gitignore
