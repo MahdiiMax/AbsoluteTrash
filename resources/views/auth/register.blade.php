@@ -5,17 +5,17 @@
 @section('content')
     <h2>Register</h2>
 
-    @if(session('errors'))
+    @if (session('errors'))
         <ul style="color: red;">
-            @foreach(session('errors') as $field => $messages)
-                @foreach($messages as $msg)
+            @foreach (session('errors') as $field => $messages)
+                @foreach ($messages as $msg)
                     <li>{{ $msg }}</li>
                 @endforeach
             @endforeach
         </ul>
     @endif
 
-    <form method="POST" action="/register">
+    <form method="POST" action="{{ route('register') }}">
         @csrf
         <div>
             <label for="name">Name</label>

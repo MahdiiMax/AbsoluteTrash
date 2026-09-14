@@ -5,17 +5,17 @@
 @section('content')
     <h2>Login</h2>
 
-    @if(session('errors'))
+    @if (session('errors'))
         <ul style="color: red;">
-            @foreach(session('errors') as $field => $messages)
-                @foreach($messages as $msg)
+            @foreach (session('errors') as $field => $messages)
+                @foreach ($messages as $msg)
                     <li>{{ $msg }}</li>
                 @endforeach
             @endforeach
         </ul>
     @endif
 
-    <form method="POST" action="/login">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
         <div>
             <label for="email">Email</label>
