@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Trash\Database;
 
-use RuntimeException;
+use Trash\Database\Exceptions\ModelNotFoundException;
 use Trash\Support\Collection;
 use Trash\Support\Str;
 
@@ -13,7 +13,7 @@ class Model
     protected static string $table = '';
     protected static array $fillable = [];
     protected static array $casts = [];
-
+    protected static bool $timestamps = true;
     public array $attributes = [];
     public bool $exists = false;
 
@@ -79,10 +79,14 @@ class Model
             : Str::plural(Str::snake(Str::studly(substr(static::class, strrpos(static::class, '\\') + 1))));
     }
 
+    public static function query(): ModelBuilder
+    {
+        return new ModelBuilder(app(Connection::class), static::getTable(), static::class);
+    }
+
     public static function all(): Collection
     {
-        $rows = app(Connection::class)->select('SELECT * FROM ' . static::getTable());
-        return Collection::make(array_map(fn($row) => static::fromRow($row), $rows));
+        return static::query()->get();
     }
 
     public static function find(int $id): ?static
@@ -98,18 +102,14 @@ class Model
     {
         $model = static::find($id);
         if ($model === null) {
-            throw new RuntimeException(static::class . " not found.");
+            throw new ModelNotFoundException(static::class . ' not found.');
         }
         return $model;
     }
 
-    public static function where(string $column, mixed $value): Collection
+    public static function where(string $column, mixed $value): ModelBuilder
     {
-        $rows = app(Connection::class)->select(
-            'SELECT * FROM ' . static::getTable() . ' WHERE ' . $column . ' = ?',
-            [$value]
-        );
-        return Collection::make(array_map(fn($row) => static::fromRow($row), $rows));
+        return static::query()->where($column, $value);
     }
 
     public static function create(array $attributes): static
@@ -125,6 +125,7 @@ class Model
         if ($this->exists) {
             return $this->update();
         }
+        $this->setTimestampsForCreate();
         $id = app(Connection::class)->insert(static::getTable(), $this->attributes);
         $this->id = (int) $id;
         $this->exists = true;
@@ -139,6 +140,7 @@ class Model
         if (!$this->exists || !isset($this->attributes['id'])) {
             return false;
         }
+        $this->setTimestampForUpdate();
         $id = $this->attributes['id'];
         $data = $this->attributes;
         unset($data['id']);
@@ -184,20 +186,27 @@ class Model
 
     public static function paginate(int $perPage = 15, ?int $page = null): array
     {
-        $page = $page ?? max(1, (int) ($_GET['page'] ?? 1));
-        $total = (int) app(Connection::class)->selectOne(
-            'SELECT COUNT(*) AS total FROM ' . static::getTable()
-        )['total'];
-        $pages = max(1, (int) ceil($total / $perPage));
-        $offset = ($page - 1) * $perPage;
-        $rows = app(Connection::class)->select(
-            'SELECT * FROM ' . static::getTable() . ' LIMIT ' . (int)$perPage . ' OFFSET ' . (int)$offset
-        );
-        return [
-            'items' => Collection::make(array_map(fn($r) => static::fromRow($r), $rows)),
-            'page'  => $page,
-            'pages' => $pages,
-            'total' => $total,
-        ];
+        return static::query()->paginate($perPage, $page);
+    }
+
+    private function setTimestampsForCreate(): void
+    {
+        if (!static::$timestamps) {
+            return;
+        }
+        $now = date('Y-m-d H:i:s');
+        if (!array_key_exists('created_at', $this->attributes)) {
+            $this->attributes['created_at'] = $now;
+        }
+        if (!array_key_exists('updated_at', $this->attributes)) {
+            $this->attributes['updated_at'] = $now;
+        }
+    }
+
+    private function setTimestampForUpdate(): void
+    {
+        if (static::$timestamps) {
+            $this->attributes['updated_at'] = date('Y-m-d H:i:s');
+        }
     }
 }
