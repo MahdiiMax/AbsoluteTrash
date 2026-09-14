@@ -18,7 +18,7 @@ architecture. **This is a work in progress.**
 - [x] Auth, validation, sessions
 - [x] Mail / storage
 - [x] Console CLI
-- [ ] Demo app
+- [x] Demo app
 - [ ] Tests & docs
 
 ## Requirements
