@@ -5,17 +5,17 @@
 @section('content')
     <h2>Create a Post</h2>
 
-    @if(session('errors'))
+    @if (session('errors'))
         <ul style="color: red;">
-            @foreach(session('errors') as $field => $messages)
-                @foreach($messages as $msg)
+            @foreach (session('errors') as $field => $messages)
+                @foreach ($messages as $msg)
                     <li>{{ $msg }}</li>
                 @endforeach
             @endforeach
         </ul>
     @endif
 
-    <form method="POST" action="/posts">
+    <form method="POST" action="{{ route('posts.index') }}">
         @csrf
         <div>
             <label for="title">Title</label>
@@ -28,5 +28,5 @@
         <button type="submit">Create</button>
     </form>
 
-    <p><a href="/posts">&larr; Back to posts</a></p>
+    <p><a href="{{ route('posts.index') }}">&larr; Back to posts</a></p>
 @endsection

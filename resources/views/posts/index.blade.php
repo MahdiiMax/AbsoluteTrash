@@ -5,49 +5,49 @@
 @section('content')
     <h2>Posts ({{ $total }} total)</h2>
 
-    @if(session('status'))
+    @if (session('status'))
         <p style="color: green;">{{ session('status') }}</p>
     @endif
 
-    @if(session('errors'))
+    @if (session('errors'))
         <ul style="color: red;">
-            @foreach(session('errors') as $field => $messages)
-                @foreach($messages as $msg)
+            @foreach (session('errors') as $field => $messages)
+                @foreach ($messages as $msg)
                     <li>{{ $msg }}</li>
                 @endforeach
             @endforeach
         </ul>
     @endif
 
-    <p><a href="/posts/create">Create a post</a></p>
+    <p><a href="{{ route('posts.create') }}">Create a post</a></p>
 
-   <ul>
-        @foreach($posts as $post)
+    <ul>
+        @foreach ($posts as $post)
             <li>
-                <strong><a href="/posts/{{ $post->id }}">{{ $post->title }}</a></strong>
+                <strong><a href="{{ route('posts.show', ['id' => $post->id]) }}">{{ $post->title }}</a></strong>
                 <span>by {{ $post->author()?->name ?? 'Unknown' }} ({{ $post->created_at }})</span>
             </li>
         @endforeach
     </ul>
 
-    @if($pages > 1)
+    @if ($pages > 1)
         <div>
             Page {{ $page }} of {{ $pages }}
 
-            @if($page > 1)
-                <a href="/posts?page={{ $page - 1 }}">&laquo; Prev</a>
+            @if ($page > 1)
+                <a href="{{ route('posts.index') . '?page=' . ($page - 1) }}">&laquo; Prev</a>
             @endif
 
-            @for($i = 1; $i <= $pages; $i++)
-                @if($i === $page)
+            @for ($i = 1; $i <= $pages; $i++)
+                @if ($i === $page)
                     <strong>{{ $i }}</strong>
                 @else
-                    <a href="/posts?page={{ $i }}">{{ $i }}</a>
+                    <a href="{{ route('posts.index') . '?page=' . $i }}">{{ $i }}</a>
                 @endif
             @endfor
 
-            @if($page < $pages)
-                <a href="/posts?page={{ $page + 1 }}">Next &raquo;</a>
+            @if ($page < $pages)
+                <a href="{{ route('posts.index') . '?page=' . ($page + 1) }}">Next &raquo;</a>
             @endif
         </div>
     @endif
