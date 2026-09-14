@@ -5,9 +5,9 @@
 @section('content')
     <h2>All Users</h2>
     <ul>
-        @foreach($users as $user)
+        @foreach ($users as $user)
             <li>
-                <a href="/users/{{ $user->id }}">{{ $user->name }}</a>
+                <a href="{{ route('users.show', ['id' => $user->id]) }}">{{ $user->name }}</a>
                 &lt;{{ $user->email }}&gt;
             </li>
         @endforeach
