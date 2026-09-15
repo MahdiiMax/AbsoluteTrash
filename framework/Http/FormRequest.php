@@ -24,7 +24,10 @@ abstract class FormRequest
         $validator = new Validator($input, $this->rules());
         if ($validator->fails()) {
             $this->errors = $validator->errors();
-            abort(422, json_encode($this->errors));
+            if ($this->wantsJson($request)) {
+                abort(422, json_encode($this->errors));
+            }
+            throw new ValidationException($validator->errors());
         }
         $this->validated = $validator->validated();
     }
@@ -52,5 +55,11 @@ abstract class FormRequest
     public function errors(): array
     {
         return $this->errors;
+    }
+
+    protected function wantsJson(ServerRequestInterface $request): bool
+    {
+        return str_contains($request->getHeaderLine('Accept'), 'application/json')
+            || $request->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
     }
 }

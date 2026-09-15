@@ -35,4 +35,10 @@ class RedirectResponse extends Response
     {
         return $this->with('errors', $errors);
     }
+
+    public function back(?string $fallback = '/'): static
+    {
+        $url = $_SERVER['HTTP_REFERER'] ?? $fallback;
+        return new static($url, $this->getStatusCode());
+    }
 }

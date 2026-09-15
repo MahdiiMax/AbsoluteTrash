@@ -8,11 +8,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 use Trash\Container\Container;
+use Trash\Database\Exceptions\ModelNotFoundException;
 use Trash\Foundation\Facades\Facade;
 use Trash\Http\Message\Response;
 use Trash\Http\Message\ServerRequestFactory;
 use Trash\Http\Middleware\Dispatcher;
 use Trash\Http\Middleware\RouterMiddleware;
+use Trash\Http\ValidationException;
 use Trash\Routing\Exceptions\HttpNotFoundException;
 use Trash\Routing\RouteHandler;
 use Trash\Routing\Router;
@@ -57,6 +59,7 @@ class Application extends Container
     {
         $request ??= ServerRequestFactory::fromGlobals();
         $this->instance(ServerRequestInterface::class, $request);
+        $this->instance(get_class($request), $request);
         $router = $this->make(Router::class);
         $global = array_map(fn(string $middleware) => $this->make($middleware), config('app.middleware', []));
         $pipeline = new Dispatcher(
@@ -65,6 +68,10 @@ class Application extends Container
         );
         try {
             return $pipeline->handle($request);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors);
+        } catch (ModelNotFoundException) {
+            return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
         } catch (HttpNotFoundException) {
             return new Response(404, ['Content-Type' => 'text/plain'], 'Not Found');
         } catch (Throwable $e) {

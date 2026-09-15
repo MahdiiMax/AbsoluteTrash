@@ -9,4 +9,9 @@ use Trash\Database\Model;
 class Post extends Model
 {
     protected static array $fillable = ['user_id', 'title', 'body', 'published', 'created_at', 'updated_at'];
+
+    public function author(): ?User
+    {
+        return User::find($this->user_id);
+    }
 }

@@ -36,7 +36,9 @@ class Compiler
             'section' => $this->compileSection(...),
             'endsection' => fn() => '<?php $__env->stopSection(); ?>',
             'stop' => fn() => '<?php $__env->stopSection(); ?>',
-            'yield' => $this->compileYield(...)
+            'yield' => $this->compileYield(...),
+            'method' => fn(string $e) => '<?php echo \'<input type="hidden" name="_method" value="' . trim($e, "\"' ") . '">\'; ?>',
+            'csrf' => fn() => '<?php echo csrf_field(); ?>'
         ];
     }
 
@@ -103,7 +105,7 @@ class Compiler
             : ['$__k', $as];
         $depth = $this->loopDepth++;
         $data = '$__loopData' . $depth;
-        return '<?php foreach ((' . $data . ' = ' . trim($items) . ') as ' . $key . ' => ' . $value . '): $loop = new \Trash\View\Loop(' . $data . ', ' . $key . '); ?>';
+        return '<?php $__loopIndex' . $depth . ' = 0; foreach ((' . $data . ' = ' . trim($items) . ') as ' . $key . ' => ' . $value . '): $loop = new \Trash\View\Loop(' . $data . ', $__loopIndex' . $depth . '++); ?>';
     }
 
     private function compileForeachEnd(): string
@@ -121,7 +123,7 @@ class Compiler
         $depth = $this->loopDepth++;
         $data = '$__loopData' . $depth;
         $empty = '$__empty' . $depth;
-        return '<?php ' . $empty . ' = true; foreach ((' . $data . ' = ' . trim($items) . ') as ' . $key . ' => ' . $value . '): ' . $empty . ' = false; $loop = new \Trash\View\Loop(' . $data . ', ' . $key . '); ?>';
+        return '<?php ' . $empty . ' = true; $__loopIndex' . $depth . ' = 0; foreach ((' . $data . ' = ' . trim($items) . ') as ' . $key . ' => ' . $value . '): ' . $empty . ' = false; $loop = new \Trash\View\Loop(' . $data . ', $__loopIndex' . $depth . '++); ?>';
     }
 
     private function compileEmpty(): string

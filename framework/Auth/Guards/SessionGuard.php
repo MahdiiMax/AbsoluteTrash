@@ -14,6 +14,7 @@ class SessionGuard
     public function login(User $user): void
     {
         $this->user = $user;
+        $this->session()->regenerate();
         $this->session()->set($this->key(), $user->id);
     }
 
@@ -21,6 +22,7 @@ class SessionGuard
     {
         $this->user = null;
         $this->session()->forget($this->key());
+        $this->session()->regenerate();
     }
 
     public function check(): bool

@@ -25,9 +25,8 @@ class ServeCommand extends Command
         }
         $server  = escapeshellarg("{$host}:{$port}");
         $docroot = escapeshellarg($public);
-        $router  = escapeshellarg($index);
         $this->info("Server running at http://{$host}:{$port}");
-        passthru(PHP_BINARY . " -S {$server} -t {$docroot} {$router}");
+        passthru(PHP_BINARY . " -S {$server} -t {$docroot}");
         return 0;
     }
 

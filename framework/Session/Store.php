@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Trash\Session;
 
 use SessionHandlerInterface;
+use Trash\Support\Str;
 
 class Store
 {
@@ -123,5 +124,20 @@ class Store
             $this->flashData['new'],
             $this->flashData['old']
         );
+    }
+
+    public function token(): string
+    {
+        $token = $this->get('_token');
+        if (!is_string($token) || $token === '') {
+            $token = Str::random(40);
+            $this->set('_token', $token);
+        }
+        return $token;
+    }
+
+    public function regenerate(): void
+    {
+        $this->id = Str::random(40);
     }
 }

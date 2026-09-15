@@ -42,4 +42,9 @@ class Schema
             [$table]
         )['cnt'] > 0;
     }
+
+    public function statement(string $sql): void
+    {
+        $this->connection->run($sql);
+    }
 }
