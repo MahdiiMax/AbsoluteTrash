@@ -66,11 +66,11 @@ class StoreTest extends TestCase
         $store->push('items', 'a');
         $store->push('items', 'b');
         $this->assertSame(['a', 'b'], $store->get('items'));
-        $this->assertSame('a', $store->pull('items'));
-        $this->assertSame(['b'], $store->get('items'));
+        $this->assertSame(['a', 'b'], $store->pull('items'));
+        $this->assertNull($store->get('items'));
         $store->set('count', 5);
         $this->assertSame(6, $store->increment('count'));
-        $this->assertSame(4, $store->decrement('count'));
+        $this->assertSame(5, $store->decrement('count'));
         $this->assertSame(1, $store->increment('fresh'));
     }
 
@@ -81,7 +81,7 @@ class StoreTest extends TestCase
         $first->start();
         $first->flash('status', 'ok');
         $first->save();
-        $this->assertArrayHasKey('status', $handler->data['sess123']);
+        $this->assertArrayHasKey('status', unserialize($handler->data['sess123']));
         $second = $this->makeStore($handler);
         $second->start();
         $this->assertSame('ok', $second->get('status'));
