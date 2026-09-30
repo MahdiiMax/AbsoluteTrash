@@ -19,7 +19,7 @@ architecture. **This is a work in progress.**
 - [x] Mail / storage
 - [x] Console CLI
 - [x] Demo app
-- [ ] Tests & docs
+- [x] Tests & docs
 
 ## Requirements
 
@@ -29,11 +29,18 @@ architecture. **This is a work in progress.**
 
 ## Installation
 
-Coming soon — will use `composer create-project absolutetrash/framework`.
+1. Clone the repository.
+2. `composer install`
+3. `cp .env.example .env` and configure your database.
+4. `php bin/trash migrate`
+5. `php bin/trash serve`
+
+Full guide: [docs/installation.md](docs/installation.md)
 
 ## Documentation
 
-Coming soon.
+- [Installation](docs/installation.md)
+- [Basics](docs/basics.md)
 
 ## License
 
